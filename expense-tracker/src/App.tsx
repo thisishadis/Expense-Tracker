@@ -10,26 +10,90 @@ import {
   Router,
 } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
+import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
+import PaymentRoundedIcon from '@mui/icons-material/PaymentRounded';
+import CurrencyExchangeRoundedIcon from '@mui/icons-material/CurrencyExchangeRounded';
+import MoneyOffCsredOutlinedIcon from '@mui/icons-material/MoneyOffCsredOutlined';
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
+import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
+import ImportExportOutlinedIcon from '@mui/icons-material/ImportExportOutlined';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import Setting from './Setting';
+import { Stack } from '@mui/material';
 
 const NAVIGATION: Navigation = [
   {
-    segment: 'dashboard',
-    title: 'Dashboard',
+    segment: 'overview',
+    title: 'Overview',
     icon: <DashboardIcon />,
   },
   {
-    segment: 'orders',
-    title: 'Orders',
-    icon: <ShoppingCartIcon />,
+    segment: 'transactions',
+    title: 'Transactions',
+    icon: <HistoryRoundedIcon />,
   },
   {
-    segment: 'reports',
-    title: 'Reports',
+    segment: 'scheduled-transactions',
+    title: 'Scheduled Transactions',
     icon: <BarChartIcon />,
   },
+  {
+    segment: 'accounts',
+    title: 'Accounts',
+    icon: <AccountBalanceRoundedIcon />,
+  },
+  {
+    segment: 'credit-cards',
+    title: 'Credit Cards',
+    icon: <PaymentRoundedIcon />,
+  },
+  {
+    segment: 'budgets',
+    title: 'Budgets',
+    icon: <CurrencyExchangeRoundedIcon />,
+  },
+  {
+    segment: 'debts',
+    title: 'Debts',
+    icon: <MoneyOffCsredOutlinedIcon />,
+  },
+  {
+    segment: 'charts',
+    title: 'Charts',
+    icon: <BarChartOutlinedIcon />,
+  },
+  {
+    segment: 'calendar',
+    title: 'Calendar',
+    icon: <EventOutlinedIcon />,
+  },
+  {
+    segment: 'import-export',
+    title: 'Import/Export',
+    icon: <ImportExportOutlinedIcon />,
+  },
+  {
+    segment: 'preferences',
+    title: 'Preferences',
+    icon: <ManageAccountsOutlinedIcon />,
+  },
+  {
+    segment: 'bank-synchronization',
+    title: 'Bank Synchronization',
+    icon: <SyncOutlinedIcon />,
+  },
+  {
+    segment: 'settings',
+    title: 'Settings',
+    icon: <SettingsOutlinedIcon />,
+
+  },
 ];
+
 
 
 const demoTheme = createTheme({
@@ -49,6 +113,11 @@ const demoTheme = createTheme({
 });
 
 function DemoPageContent({ pathname }: { pathname: string }) {
+  if (pathname === '/settings') {
+    return <Setting />; // Render the Setting component
+  }
+
+  // Default dashboard content for other paths
   return (
     <Box
       sx={{
@@ -71,11 +140,17 @@ interface DemoProps {
    */
   window?: () => Window;
 }
-
+function CustomAppTitle() {
+  return (
+    <Stack direction="row" alignItems="center" spacing={2}>
+      <Typography variant="h5" color='info'>Expense Tracker</Typography>
+    </Stack>
+  );
+}
 export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props;
   const [pathname, setPathname] = React.useState('/dashboard');
-  const router = React.useMemo<Router >(() => {
+  const router = React.useMemo<Router>(() => {
     return {
       pathname,
       searchParams: new URLSearchParams(),
@@ -124,7 +199,13 @@ export default function DashboardLayoutAccount(props: DemoProps) {
       theme={demoTheme}
       window={demoWindow}
     >
-      <DashboardLayout disableCollapsibleSidebar  >
+      <DashboardLayout disableCollapsibleSidebar
+        slots={{
+          appTitle: CustomAppTitle
+          // toolbarActions: ToolbarActionsSearch,
+          // sidebarFooter: SidebarFooter,
+        }}
+      >
         <DemoPageContent pathname={router.pathname} />
       </DashboardLayout>
     </AppProvider>
